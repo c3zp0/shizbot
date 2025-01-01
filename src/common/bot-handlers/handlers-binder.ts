@@ -25,7 +25,6 @@ export default class BotHandlersBinder {
         this._bot.use(outDatedMessagesMiddleware.middleware.bind(outDatedMessagesMiddleware));
         this._bot.use(messageMiddleware.middleware.bind(messageMiddleware));
 
-        this._bot.on(':photo', (ctx) => new PhraseOnPhotoBotHandler().process(ctx));
         this._bot.on([':voice', ':video_note'], async (ctx) => {
             await new VoiceMessageBotHandler().process(ctx);
         });
