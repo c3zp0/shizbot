@@ -88,6 +88,7 @@ export default class MessageService {
                 eb
                     .selectFrom('users_chats')
                     .where('chat_id', '=', chatId)
+                    .where('user_id', '=', userId)
                     .select(
                         sql<string>`generate_series(${startDate.toISOString()}, ${endDate.toISOString()}, interval '1month')`.as(
                             'tf',
