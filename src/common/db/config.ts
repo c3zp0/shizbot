@@ -21,7 +21,7 @@ const options: PostgresConnectionOptions = {
     migrationsTableName: 'migrations',
     migrations: [path.resolve(__dirname, 'migrations', '*.{ts,js}')],
     entities: [UserEntity, VoiceEntity, ChatEntity, MessageEntity],
-    logging: false,
+    logging: 'all',
     synchronize: false,
 };
 
