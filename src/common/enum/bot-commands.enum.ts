@@ -6,6 +6,7 @@ enum BotCommandsEnum {
     TOP_MESSAGES = 'top_messages',
     RANDOM = 'random',
     WIKI = 'w',
+    MY_MESSAGES = 'my_messages',
 }
 
 export { BotCommandsEnum };
