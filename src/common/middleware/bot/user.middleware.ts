@@ -1,23 +1,22 @@
-import { Context, NextFunction } from 'grammy';
+import { NextFunction } from 'grammy';
 import IBotMiddleware from '../../interfaces/bot-middleware.interface';
-import Db from '../../db/db';
 import UserService from '../../../user/services/user.service';
 import UserEntity from '../../../user/entities/user.entity';
 import ChatService from '../../../chat/services/chat.service';
 import ChatEntity from '../../../chat/entities/chat.entity';
 import { CustomContext } from '../../types/custom-context.type';
+import { dataSource } from '../../db/config';
 
 export default class BotUserMiddleware implements IBotMiddleware {
     private userService: UserService;
     private chatService: ChatService;
 
     constructor() {
-        const ds = Db.getDataSource();
-        this.userService = new UserService(ds.getRepository(UserEntity));
-        this.chatService = new ChatService(ds.getRepository(ChatEntity));
+        this.userService = new UserService(dataSource.getRepository(UserEntity));
+        this.chatService = new ChatService(dataSource.getRepository(ChatEntity));
     }
 
-    async middleware(ctx: CustomContext, next: NextFunction) {
+    async handler(ctx: CustomContext, next: NextFunction) {
         if (!ctx.from) {
             throw new Error('Cannot determine from props');
         }
@@ -41,6 +40,7 @@ export default class BotUserMiddleware implements IBotMiddleware {
             user.chats.push(chat);
         }
         ctx.user = user;
+        ctx.session.userId = user.tgId;
         await next();
     }
 }

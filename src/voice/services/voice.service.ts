@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import UserEntity from '../../user/entities/user.entity';
 import VoiceEntity from '../entities/user-voice.entity';
-import ChatEntity from '../../chat/entities/chat.entity';
 
 export default class VoiceService {
     constructor(private readonly userVoiceService: Repository<VoiceEntity>) {}

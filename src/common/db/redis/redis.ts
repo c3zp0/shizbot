@@ -7,9 +7,13 @@ export default class Redis {
 
     static getRedisConnection(type: RedisConnectionEnum) {
         if (!Redis.clients[type]) {
-            Redis.clients[type] = createClient({ url: new RedisConfig(type).configURL });
+            Redis.clients[type] = createClient({
+                url: new RedisConfig(type).configURL,
+            });
         }
-        Redis.clients[type].on('error', (error) => console.log('Redis error\t', error));
+        Redis.clients[type].on('error', (error) =>
+            console.log('Redis error\t', error),
+        );
         return Redis.clients[type];
     }
 }

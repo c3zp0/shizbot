@@ -3,12 +3,12 @@ import ChatEntity from '../../../chat/entities/chat.entity';
 import ChatService from '../../../chat/services/chat.service';
 import MessageEntity from '../../../message/entities/message.entity';
 import MessageService from '../../../message/services/message.service';
-import Db from '../../db/db';
 import IBotMiddleware from '../../interfaces/bot-middleware.interface';
 import { CustomContext } from '../../types/custom-context.type';
 import PhraseService from '../../../phrase/phrase.service';
 import Redis from '../../db/redis/redis';
 import { RedisConnectionEnum } from '../../enum/redis-connection.enum';
+import { dataSource } from '../../db/config';
 
 export default class BotMessageProcessMiddleware implements IBotMiddleware {
     private messageService: MessageService;
@@ -16,13 +16,12 @@ export default class BotMessageProcessMiddleware implements IBotMiddleware {
     private readonly phraseMessage: PhraseService;
 
     constructor() {
-        const ds = Db.getDataSource();
-        this.messageService = new MessageService(ds.getRepository(MessageEntity));
-        this.chatService = new ChatService(ds.getRepository(ChatEntity));
+        this.messageService = new MessageService(dataSource.getRepository(MessageEntity));
+        this.chatService = new ChatService(dataSource.getRepository(ChatEntity));
         this.phraseMessage = new PhraseService(Redis.getRedisConnection(RedisConnectionEnum.SENTENCE_SEQUENCES));
     }
 
-    async middleware(ctx: CustomContext, next: NextFunction) {
+    async handler(ctx: CustomContext, next: NextFunction) {
         if (!ctx.chat) {
             return;
         }

@@ -4,6 +4,8 @@ enum BotCommandsEnum {
     TOP_VOICES_TODAY = 'top_voices_today',
     COUNT_MESSAGES = 'messages_count',
     TOP_MESSAGES = 'top_messages',
+    RANDOM = 'random',
+    WIKI = 'w',
 }
 
 export { BotCommandsEnum };

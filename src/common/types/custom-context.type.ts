@@ -1,6 +1,18 @@
-import { Context } from 'grammy';
+import { Context, SessionFlavor } from 'grammy';
 import UserEntity from '../../user/entities/user.entity';
 
-type CustomContext = Context & { user: UserEntity; isOutDatedMessage?: boolean };
+interface Session {
+    userId: number;
+    jobInProgress: string | null;
+    jobStage: string | null;
+    stageRetry: number;
+    randomStart?: number;
+    clear: (ctx: CustomContext) => void;
+}
 
-export { CustomContext };
+type CustomContext = Context & {
+    user: UserEntity;
+    isOutDatedMessage?: boolean;
+} & SessionFlavor<Session>;
+
+export { CustomContext, Session };

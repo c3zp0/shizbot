@@ -72,7 +72,7 @@ export default class PhraseService {
     }
 
     async generateSentence(word: string) {
-        let sentence: string[] = [word];
+        const sentence: string[] = [word];
         let phraseLength: number = word.length;
         let currentWords: string = word;
 
