@@ -8,8 +8,9 @@ import { messagesComposer } from '../../message/composer/message.composer';
 import { userComposer } from '../../user/transporters/user-tg-composer.transport';
 import { randomComposer } from '../../random/random.composer';
 import { wikiComposer } from '../../wiki/composers/wiki.composer';
+import { autoRetry } from '@grammyjs/auto-retry';
 
-export default class BotHandlersBinder {
+export class BotHandlersBinder {
     constructor(private readonly _bot: Bot<CustomContext>) {}
 
     async bind() {
@@ -29,6 +30,8 @@ export default class BotHandlersBinder {
                 }),
             }),
         );
+
+        this._bot.api.config.use(autoRetry({ maxRetryAttempts: 3 }));
 
         const userMiddleware = new UserMiddleware();
         const outDatedMessagesMiddleware = new BotOutDatedMessageMiddleware();

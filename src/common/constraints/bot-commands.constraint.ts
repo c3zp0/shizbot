@@ -35,4 +35,8 @@ export const BOT_COMMANDS = [
         command: BotCommandsEnum.WIKI,
         description: 'Поиск в википедии',
     },
+    {
+        command: BotCommandsEnum.MY_MESSAGES,
+        description: 'Получить количество сообщений в месяц за последний год',
+    },
 ];

@@ -24,6 +24,7 @@
         "typescript-eslint": "8.24.0"
     },
     "dependencies": {
+        "@grammyjs/auto-retry": "^2.0.2",
         "dotenv": "16.4.5",
         "grammy": "1.23.0",
         "kysely": "0.27.5",
