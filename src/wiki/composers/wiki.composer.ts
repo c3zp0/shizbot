@@ -2,7 +2,7 @@ import { Composer, InlineKeyboard } from 'grammy';
 import { CustomContext } from '../../common/types/custom-context.type';
 import { WikiService } from '../services/wiki.service';
 import { WikiController } from '../controllers/wiki.controller';
-import Redis from '../../common/db/redis/redis';
+import { Redis } from '../../common/db/redis/redis';
 import { RedisConnectionEnum } from '../../common/enum/redis-connection.enum';
 
 const wikiComposer = new Composer<CustomContext>();

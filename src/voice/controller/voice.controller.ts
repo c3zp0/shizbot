@@ -1,9 +1,10 @@
 import { Filter } from 'grammy';
 import { CustomContext } from '../../common/types/custom-context.type';
 import * as datetimeUtil from '../../common/utils/datetime.util';
-import UserEntity from '../../user/entities/user.entity';
-import UserService from '../../user/services/user.service';
-import VoiceService from '../services/voice.service';
+import { UserEntity } from '../../user/entities/user.entity';
+import { UserService } from '../../user/services/user.service';
+import { VoiceService } from '../services/voice.service';
+import { ChatEntity } from '../../chat/entities/chat.entity';
 
 export class VoiceController {
     constructor(
@@ -136,7 +137,7 @@ export class VoiceController {
         }
 
         const chatId = ctx.user.chats.find(
-            (chat) => chat.chatId === ctx.chat?.id,
+            (chat: ChatEntity) => chat.chatId === ctx.chat?.id,
         )?.id;
         if (!chatId) {
             throw new Error();

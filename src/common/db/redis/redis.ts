@@ -1,8 +1,8 @@
 import { RedisClientType, createClient } from 'redis';
-import RedisConfig from './config';
+import { RedisConfig } from './config';
 import { RedisConnectionEnum } from '../../enum/redis-connection.enum';
 
-export default class Redis {
+export class Redis {
     private static clients: Record<number, RedisClientType> = {};
 
     static getRedisConnection(type: RedisConnectionEnum) {

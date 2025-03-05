@@ -1,6 +1,6 @@
 import { RedisClientType } from 'redis';
 
-export default class PhraseService {
+export class PhraseService {
     MAX_SENTENCE_LENGTH = 300;
 
     constructor(private readonly client: RedisClientType) {}
@@ -42,19 +42,28 @@ export default class PhraseService {
                 sequenceFrom1WordWith2Words,
                 sequenceFrom1WordWith3Words,
             ];
-            const base2WordsPairs = [sequenceFrom2WordWith1Words, sequenceFrom2WordWith2Words];
+            const base2WordsPairs = [
+                sequenceFrom2WordWith1Words,
+                sequenceFrom2WordWith2Words,
+            ];
 
             for (let k = 0; k < 3; k++) {
                 let _word = baseWordPairs[k];
                 if (_word) {
-                    const isSequenceAlreadyExists = await this.client.sIsMember(baseWord, _word);
+                    const isSequenceAlreadyExists = await this.client.sIsMember(
+                        baseWord,
+                        _word,
+                    );
                     if (!isSequenceAlreadyExists) {
                         await this.client.sAdd(baseWord, _word);
                     }
                 }
                 _word = base2WordsPairs[k];
                 if (_word) {
-                    const isSequenceAlreadyExists = await this.client.sIsMember(baseWordWith2Words, _word);
+                    const isSequenceAlreadyExists = await this.client.sIsMember(
+                        baseWordWith2Words,
+                        _word,
+                    );
                     if (!isSequenceAlreadyExists) {
                         await this.client.sAdd(baseWordWith2Words, _word);
                     }
@@ -77,7 +86,8 @@ export default class PhraseService {
         let currentWords: string = word;
 
         while (phraseLength < this.MAX_SENTENCE_LENGTH) {
-            const numberOfSequencesByWord = await this.client.sCard(currentWords);
+            const numberOfSequencesByWord =
+                await this.client.sCard(currentWords);
             if (numberOfSequencesByWord === 0) {
                 return sentence.join(' ').trim();
             }

@@ -1,6 +1,6 @@
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
-import envUtil from '../../utils/env.util';
+import { envUtil } from '../../utils/env.util';
 import { Database } from './interfaces/db.interface';
 
 const dialect = new PostgresDialect({

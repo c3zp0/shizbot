@@ -2,13 +2,13 @@ import { Composer } from 'grammy';
 import { CustomContext } from '../../common/types/custom-context.type';
 import { BotCommandsEnum } from '../../common/enum/bot-commands.enum';
 import { MessageController } from '../controller/message.controller';
-import ChatService from '../../chat/services/chat.service';
+import { ChatService } from '../../chat/services/chat.service';
 import { dataSource } from '../../common/db/config';
-import ChatEntity from '../../chat/entities/chat.entity';
-import MessageService from '../services/message.service';
-import MessageEntity from '../entities/message.entity';
-import PhraseService from '../../phrase/phrase.service';
-import Redis from '../../common/db/redis/redis';
+import { ChatEntity } from '../../chat/entities/chat.entity';
+import { MessageService } from '../services/message.service';
+import { MessageEntity } from '../entities/message.entity';
+import { PhraseService } from '../../phrase/phrase.service';
+import { Redis } from '../../common/db/redis/redis';
 import { RedisConnectionEnum } from '../../common/enum/redis-connection.enum';
 
 const messagesComposer = new Composer<CustomContext>();
@@ -59,7 +59,7 @@ messagesComposer.command(
             ctx.chat?.id,
         );
         await ctx.reply(
-            data.reduce((acc, row) => {
+            data.reduce((acc: string, row) => {
                 const month = row.month.padEnd(30 - row.month.length, ' ');
                 const year = row.year
                     .toString()

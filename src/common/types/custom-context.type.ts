@@ -1,5 +1,5 @@
 import { Context, SessionFlavor } from 'grammy';
-import UserEntity from '../../user/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 interface Session {
     userId: number;

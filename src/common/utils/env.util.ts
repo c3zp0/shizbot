@@ -14,4 +14,7 @@ const extractInt = (key: keyof NodeJS.ProcessEnv): number => {
     return envValue;
 };
 
-export default { extractString, extractInt };
+export const envUtil = {
+    extractString,
+    extractInt,
+};

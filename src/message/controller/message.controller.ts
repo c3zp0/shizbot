@@ -1,8 +1,9 @@
-import ChatService from '../../chat/services/chat.service';
+import { ChatEntity } from '../../chat/entities/chat.entity';
+import { ChatService } from '../../chat/services/chat.service';
 import { CustomContext } from '../../common/types/custom-context.type';
 import { MonthMapRu } from '../../common/utils/datetime.util';
-import PhraseService from '../../phrase/phrase.service';
-import MessageService from '../services/message.service';
+import { PhraseService } from '../../phrase/phrase.service';
+import { MessageService } from '../services/message.service';
 
 export class MessageController {
     constructor(
@@ -124,7 +125,7 @@ export class MessageController {
         }
 
         let chat = ctx.user.chats.find(
-            (_chat) => _chat.chatId === ctx.chat?.id,
+            (_chat: ChatEntity) => _chat.chatId === ctx.chat?.id,
         );
         if (!chat) {
             const isChatExists = await this._chatService.getChatByTelegramId(

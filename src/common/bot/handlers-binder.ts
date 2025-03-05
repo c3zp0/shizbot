@@ -1,8 +1,8 @@
 import { Bot, session } from 'grammy';
-import UserMiddleware from '../middleware/bot/user.middleware';
+import { BotUserMiddleware } from '../middleware/bot/user.middleware';
 import { CustomContext, Session } from '../types/custom-context.type';
-import BotOutDatedMessageMiddleware from '../middleware/bot/outdated-message.middleware';
-import BotMessageProcessMiddleware from '../middleware/bot/message-process.middleware';
+import { BotOutDatedMessageMiddleware } from '../middleware/bot/outdated-message.middleware';
+import { BotMessageProcessMiddleware } from '../middleware/bot/message-process.middleware';
 import { voiceComposer } from '../../voice/composer/voice.composer';
 import { messagesComposer } from '../../message/composer/message.composer';
 import { userComposer } from '../../user/transporters/user-tg-composer.transport';
@@ -33,7 +33,7 @@ export class BotHandlersBinder {
 
         this._bot.api.config.use(autoRetry({ maxRetryAttempts: 3 }));
 
-        const userMiddleware = new UserMiddleware();
+        const userMiddleware = new BotUserMiddleware();
         const outDatedMessagesMiddleware = new BotOutDatedMessageMiddleware();
         const messageMiddleware = new BotMessageProcessMiddleware();
 

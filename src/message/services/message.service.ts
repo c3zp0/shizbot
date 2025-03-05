@@ -1,10 +1,10 @@
 import { FindOptionsWhere, Repository } from 'typeorm';
-import MessageEntity from '../entities/message.entity';
-import ChatEntity from '../../chat/entities/chat.entity';
+import { MessageEntity } from '../entities/message.entity';
+import { ChatEntity } from '../../chat/entities/chat.entity';
 import { kyselyDb } from '../../common/db/kysely/config';
 import { sql } from 'kysely';
 
-export default class MessageService {
+export class MessageService {
     constructor(
         private readonly messageRepository: Repository<MessageEntity>,
     ) {}

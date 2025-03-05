@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
-import UserEntity from '../../user/entities/user.entity';
-import VoiceEntity from '../entities/user-voice.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { VoiceEntity } from '../entities/user-voice.entity';
 
-export default class VoiceService {
+export class VoiceService {
     constructor(private readonly userVoiceService: Repository<VoiceEntity>) {}
 
     create(
@@ -14,7 +14,14 @@ export default class VoiceService {
         chatId: number,
     ): Promise<VoiceEntity> {
         return this.userVoiceService.save(
-            this.userVoiceService.create({ duration, fileId, fileUniqueId, fileSize, userId: user.id, chatId }),
+            this.userVoiceService.create({
+                duration,
+                fileId,
+                fileUniqueId,
+                fileSize,
+                userId: user.id,
+                chatId,
+            }),
         );
     }
 
@@ -28,11 +35,16 @@ export default class VoiceService {
             .select(['voices.chatId'])
             .addSelect('sum(voices.duration) as length')
             .leftJoin('voices.chat', 'chats')
-            .where('chats.chatId = :chatId and voices.userId = :userId', { chatId, userId: user.id })
+            .where('chats.chatId = :chatId and voices.userId = :userId', {
+                chatId,
+                userId: user.id,
+            })
             .groupBy('voices.chatId');
 
         if (timeFrame) {
-            builder.andWhere('voices.createdAt between :start and :end', { ...timeFrame });
+            builder.andWhere('voices.createdAt between :start and :end', {
+                ...timeFrame,
+            });
         }
 
         const stmt = await builder.getRawOne();
@@ -56,7 +68,9 @@ export default class VoiceService {
             .groupBy('voices.userId');
 
         if (timeFrame) {
-            builder.andWhere('voices.createdAt between :start and :end', { ...timeFrame });
+            builder.andWhere('voices.createdAt between :start and :end', {
+                ...timeFrame,
+            });
         }
 
         const stmt = await builder.getRawMany();
@@ -67,17 +81,26 @@ export default class VoiceService {
         return result;
     }
 
-    async getUserVoicesCount(user: UserEntity, tgChatId: number, timeFrame?: { start: Date; end: Date }) {
+    async getUserVoicesCount(
+        user: UserEntity,
+        tgChatId: number,
+        timeFrame?: { start: Date; end: Date },
+    ) {
         const builder = await this.userVoiceService
             .createQueryBuilder('voices')
             .select(['voices.chatId'])
             .addSelect('count(voices.id) as cnt')
             .leftJoin('voices.chat', 'chats')
-            .where('chats.chatId = :chatId and voices.userId = :userId', { chatId: tgChatId, userId: user.id })
+            .where('chats.chatId = :chatId and voices.userId = :userId', {
+                chatId: tgChatId,
+                userId: user.id,
+            })
             .groupBy('voices.chatId');
 
         if (timeFrame) {
-            builder.andWhere('voices.createdAt between :start and :end', { ...timeFrame });
+            builder.andWhere('voices.createdAt between :start and :end', {
+                ...timeFrame,
+            });
         }
 
         const stmt = await builder.getRawOne();
@@ -87,7 +110,10 @@ export default class VoiceService {
         return stmt.cnt;
     }
 
-    async getChatTotalVoicesDuration(tgChatId: number, timeFrame?: { start: Date; end: Date }) {
+    async getChatTotalVoicesDuration(
+        tgChatId: number,
+        timeFrame?: { start: Date; end: Date },
+    ) {
         const builder = await this.userVoiceService
             .createQueryBuilder('voices')
             .select(['voices.chatId'])
@@ -97,7 +123,9 @@ export default class VoiceService {
             .groupBy('voices.chatId');
 
         if (timeFrame) {
-            builder.andWhere('voices.createdAt between :start and :end', { ...timeFrame });
+            builder.andWhere('voices.createdAt between :start and :end', {
+                ...timeFrame,
+            });
         }
 
         const stmt = await builder.getRawOne();

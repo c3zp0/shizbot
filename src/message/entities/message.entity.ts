@@ -1,8 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import ChatEntity from '../../chat/entities/chat.entity';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ChatEntity } from '../../chat/entities/chat.entity';
 
 @Entity({ name: 'chats_messages' })
-export default class MessageEntity {
+export class MessageEntity {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 

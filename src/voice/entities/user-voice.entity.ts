@@ -1,9 +1,16 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import UserEntity from '../../user/entities/user.entity';
-import ChatEntity from '../../chat/entities/chat.entity';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
+import { ChatEntity } from '../../chat/entities/chat.entity';
 
 @Entity({ name: 'users_voices' })
-export default class VoiceEntity {
+export class VoiceEntity {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 

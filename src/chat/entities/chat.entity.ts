@@ -1,10 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import UserEntity from '../../user/entities/user.entity';
-import VoiceEntity from '../../voice/entities/user-voice.entity';
-import MessageEntity from '../../message/entities/message.entity';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
+import { VoiceEntity } from '../../voice/entities/user-voice.entity';
+import { MessageEntity } from '../../message/entities/message.entity';
 
 @Entity({ name: 'users_chats' })
-export default class ChatEntity {
+export class ChatEntity {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 

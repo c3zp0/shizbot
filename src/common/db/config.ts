@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { DataSource } from 'typeorm';
-import envUtil from '../utils/env.util';
-import UserEntity from '../../user/entities/user.entity';
-import VoiceEntity from '../../voice/entities/user-voice.entity';
-import ChatEntity from '../../chat/entities/chat.entity';
-import MessageEntity from '../../message/entities/message.entity';
+import { envUtil } from '../utils/env.util';
+import { UserEntity } from '../../user/entities/user.entity';
+import { VoiceEntity } from '../../voice/entities/user-voice.entity';
+import { ChatEntity } from '../../chat/entities/chat.entity';
+import { MessageEntity } from '../../message/entities/message.entity';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 dotenv.config();

@@ -1,9 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import ChatEntity from '../../chat/entities/chat.entity';
-import VoiceEntity from '../../voice/entities/user-voice.entity';
+import { ChatEntity } from '../../chat/entities/chat.entity';
+import { VoiceEntity } from '../../voice/entities/user-voice.entity';
 
 @Entity({ name: 'users' })
-export default class UserEntity {
+export class UserEntity {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 

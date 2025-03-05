@@ -1,15 +1,12 @@
 import { Bot } from 'grammy';
-import envUtil from './common/utils/env.util';
-import * as dotenv from 'dotenv';
-import BotHandlersBinder from './common/bot/handlers-binder';
+import { envUtil } from './common/utils/env.util';
+import { BotHandlersBinder } from './common/bot/handlers-binder';
 import { BotCommandsEnum } from './common/enum/bot-commands.enum';
-import Redis from './common/db/redis/redis';
+import { Redis } from './common/db/redis/redis';
 import { CustomContext } from './common/types/custom-context.type';
 import { RedisConnectionEnum } from './common/enum/redis-connection.enum';
 import { dataSource } from './common/db/config';
 import { BOT_COMMANDS } from './common/constraints/bot-commands.constraint';
-
-dotenv.config();
 
 const bot = new Bot<CustomContext>(envUtil.extractString('BOT_TOKEN'));
 

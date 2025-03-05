@@ -1,7 +1,7 @@
 import { RedisConnectionEnum } from '../../enum/redis-connection.enum';
-import envUtil from '../../utils/env.util';
+import { envUtil } from '../../utils/env.util';
 
-export default class RedisConfig {
+export class RedisConfig {
     private _dbNumber: number;
     constructor(type: RedisConnectionEnum) {
         this._dbNumber = type;
