@@ -190,7 +190,7 @@ export class VoiceController {
         const todayAmountOfVoicesReply =
             'Сегодня вы отправили сообщений на ' +
             datetimeUtil.parseSecondsIntoTimeString(todayDuration);
-        const todayVoicesPercentage = (voicesDuration / todayDuration) * 100;
+        const todayVoicesPercentage = (todayDuration / voicesDuration) * 100;
         const todayVoicesPercentageReply = `, это ${todayVoicesPercentage.toFixed(1)}% от общего числа`;
         await ctx.reply(
             amountOfVoicesReply +
