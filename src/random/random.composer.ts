@@ -9,8 +9,12 @@ randomComposer.command('random', (ctx: CustomContext) => {
     }
     ctx.session.jobInProgress = 'random';
     ctx.session.jobStage = 'first_number';
-    ctx.reply('Enter random start: ', {
-        reply_markup: { force_reply: true },
+    ctx.reply('Введите начало диапозона: ', {
+        reply_markup: {
+            force_reply: true,
+            selective: true,
+            input_field_placeholder: 'Число',
+        },
         reply_parameters: { message_id: ctx.message?.message_id },
     });
 });
@@ -35,7 +39,11 @@ randomComposer
             await ctx.reply(
                 `Enter random start: ${ctx.session.stageRetry ? `\nAttempt number ${ctx.session.stageRetry}` : ''}`,
                 {
-                    reply_markup: { force_reply: true },
+                    reply_markup: {
+                        force_reply: true,
+                        selective: true,
+                        input_field_placeholder: 'Число',
+                    },
                     reply_parameters: { message_id: ctx.message?.message_id },
                 },
             );
@@ -44,7 +52,11 @@ randomComposer
         ctx.session.randomStart = randomStart;
         ctx.session.jobStage = 'last_number';
         ctx.reply('Enter random end: ', {
-            reply_markup: { force_reply: true },
+            reply_markup: {
+                force_reply: true,
+                selective: true,
+                input_field_placeholder: 'Число',
+            },
             reply_parameters: { message_id: ctx.message?.message_id },
         });
     });
@@ -72,7 +84,11 @@ randomComposer
             await ctx.reply(
                 `Enter random end: ${ctx.session.stageRetry ? `\nAttempt number ${ctx.session.stageRetry}` : ''}`,
                 {
-                    reply_markup: { force_reply: true },
+                    reply_markup: {
+                        force_reply: true,
+                        selective: true,
+                        input_field_placeholder: 'Число',
+                    },
                     reply_parameters: { message_id: ctx.message?.message_id },
                 },
             );
