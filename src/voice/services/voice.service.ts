@@ -85,11 +85,12 @@ export class VoiceService {
         user: UserEntity,
         tgChatId: number,
         timeFrame?: { start: Date; end: Date },
-    ) {
+    ): Promise<{ count: number; duration: number }> {
         const builder = await this.userVoiceService
             .createQueryBuilder('voices')
             .select(['voices.chatId'])
             .addSelect('count(voices.id) as cnt')
+            .addSelect('sum(voices.duration) as msg_duration_amount')
             .leftJoin('voices.chat', 'chats')
             .where('chats.chatId = :chatId and voices.userId = :userId', {
                 chatId: tgChatId,
@@ -105,9 +106,9 @@ export class VoiceService {
 
         const stmt = await builder.getRawOne();
         if (!stmt) {
-            return 0;
+            throw new Error('Voices not found');
         }
-        return stmt.cnt;
+        return { count: stmt.cnt, duration: stmt.msg_duration_amount };
     }
 
     async getChatTotalVoicesDuration(

@@ -2,22 +2,22 @@ import { BotCommandsEnum } from '../enum/bot-commands.enum';
 
 export const BOT_COMMANDS = [
     {
-        command: BotCommandsEnum.COUNT_MESSAGES,
+        command: BotCommandsEnum.MESSAGES_COUNTER,
         description:
             'Количество отправленных сообщений за все время и за сегодня',
     },
     {
-        command: BotCommandsEnum.OWN_VOICES_LENGTH,
+        command: BotCommandsEnum.OWN_VOICES_DURATION,
         description:
             'Длительность голосовых сообщений в секундах за сегодня и все время',
     },
     {
-        command: BotCommandsEnum.TOP_MESSAGES,
+        command: BotCommandsEnum.TOP_MESSAGES_BY_CHAT,
         description:
             'Список пользователей с наибольшим количеством отправленных сообщений',
     },
     {
-        command: BotCommandsEnum.TOP_VOICES,
+        command: BotCommandsEnum.CHAT_TOP_VOICES,
         description:
             'Список пользователей с самой большой общей длительностью голосовых сообщений за все время',
     },
@@ -36,7 +36,7 @@ export const BOT_COMMANDS = [
         description: 'Поиск в википедии',
     },
     {
-        command: BotCommandsEnum.MY_MESSAGES,
+        command: BotCommandsEnum.MESSAGES_BY_YEAR,
         description: 'Получить количество сообщений в месяц за последний год',
     },
 ];

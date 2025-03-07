@@ -4,6 +4,7 @@ import { WikiService } from '../services/wiki.service';
 import { WikiController } from '../controllers/wiki.controller';
 import { Redis } from '../../common/db/redis/redis';
 import { RedisConnectionEnum } from '../../common/enum/redis-connection.enum';
+import { envUtil } from '../../common/utils/env.util';
 
 const wikiComposer = new Composer<CustomContext>();
 
@@ -16,16 +17,24 @@ wikiComposer.command('w', async (ctx: CustomContext) => {
     if (!ctx.message || !ctx.message.text) {
         throw new Error();
     }
-    if (ctx.message.text.trim() === '/w') {
+    if (
+        ctx.message.text.trim() === '/w' ||
+        ctx.message.text.split(' ').length === 1
+    ) {
         await ctx.reply('Добавьте строку для поиска', {
             reply_parameters: { message_id: ctx.message.message_id },
         });
         throw new Error('Request without search string');
     }
-    const searchString = ctx.message.text
+    let searchString = ctx.message.text
         .trim()
         .slice(2, ctx.message.text.length)
         .trim();
+    if (searchString.split('@').length !== 1) {
+        searchString = searchString.slice(
+            0 - (searchString.length - envUtil.extractString('BOT').length),
+        );
+    }
     const keyboard = await wikiController.search(searchString, 1);
     await ctx.reply(`Поиск википедии по слову: "${searchString}"`, {
         reply_markup: {

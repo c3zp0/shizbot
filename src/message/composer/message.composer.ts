@@ -27,11 +27,11 @@ const messageController = new MessageController(
 );
 
 messagesComposer.command(
-    BotCommandsEnum.COUNT_MESSAGES,
+    BotCommandsEnum.MESSAGES_COUNTER,
     messageController.countOwnMessages.bind(messageController),
 );
 messagesComposer.command(
-    BotCommandsEnum.TOP_MESSAGES,
+    BotCommandsEnum.TOP_MESSAGES_BY_CHAT,
     messageController.countChatUsersMessages.bind(messageController),
 );
 
@@ -49,7 +49,7 @@ messagesComposer.hears(/темка/gi, async (ctx: CustomContext) => {
 });
 
 messagesComposer.command(
-    BotCommandsEnum.MY_MESSAGES,
+    BotCommandsEnum.MESSAGES_BY_YEAR,
     async (ctx: CustomContext) => {
         if (!ctx.chat) {
             throw new Error();

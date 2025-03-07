@@ -5,6 +5,13 @@ import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/services/user.service';
 import { VoiceService } from '../services/voice.service';
 import { ChatEntity } from '../../chat/entities/chat.entity';
+import { FORWARDED_VOICE_MESSAGE_RESPONSE } from '../contraints/voice-reponses.constraint';
+import {
+    MESSAGE_IS_OUTDATED_LOG,
+    NO_CHAT_IN_CONTEXT,
+    NO_CHAT_IN_USER_CHATS,
+    NO_MESSAGE_IN_CONTEXT,
+} from '../../common/constraints/logs.constraint';
 
 export class VoiceController {
     constructor(
@@ -107,19 +114,16 @@ export class VoiceController {
 
     async handleVoice(ctx: Filter<CustomContext, ':voice' | ':video_note'>) {
         if (!ctx.message) {
-            throw new Error('Voice handler without message body');
+            throw new Error(NO_MESSAGE_IN_CONTEXT('voice handler'));
         }
         if (!ctx.message.chat || !ctx.chat) {
-            throw new Error('Voice handler without chat properties');
+            throw new Error(NO_CHAT_IN_CONTEXT('voice handler', ctx.msgId));
         }
 
         if (ctx.message.forward_origin) {
-            await ctx.reply(
-                `А ваша мама знает что вы пересылаете сообщения???`,
-                {
-                    reply_parameters: { message_id: ctx.message.message_id },
-                },
-            );
+            await ctx.reply(FORWARDED_VOICE_MESSAGE_RESPONSE, {
+                reply_parameters: { message_id: ctx.message.message_id },
+            });
             throw new Error('Forwared voice message');
         }
 
@@ -140,7 +144,7 @@ export class VoiceController {
             (chat: ChatEntity) => chat.chatId === ctx.chat?.id,
         )?.id;
         if (!chatId) {
-            throw new Error();
+            throw new Error(NO_CHAT_IN_USER_CHATS('voice handler', ctx.user));
         }
         if (
             duration === undefined ||
@@ -159,12 +163,15 @@ export class VoiceController {
             chatId,
         );
         if (ctx.isOutDatedMessage) {
-            throw new Error('Message is out dated');
+            throw new Error(
+                MESSAGE_IS_OUTDATED_LOG(
+                    'voice handler',
+                    ctx.message.message_id,
+                ),
+            );
         }
-        const totalVoices = await this._voiceService.getUserVoicesCount(
-            ctx.user,
-            ctx.chat.id,
-        );
+        const { count, duration: voicesDuration } =
+            await this._voiceService.getUserVoicesCount(ctx.user, ctx.chat.id);
         const now = new Date();
         const start = new Date(
             `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
@@ -173,14 +180,22 @@ export class VoiceController {
         end.setHours(23);
         end.setMinutes(59);
         end.setSeconds(59);
-        const todaysVoices = await this._voiceService.getUserVoicesCount(
-            ctx.user,
-            ctx.chat.id,
-            { start, end },
-        );
-
+        const { duration: todayDuration } =
+            await this._voiceService.getUserVoicesCount(ctx.user, ctx.chat.id, {
+                start,
+                end,
+            });
+        const amountOfVoicesReply =
+            'Ваше общее количество голосовых сообщений: ' + count + '\n\n';
+        const todayAmountOfVoicesReply =
+            'Сегодня вы отправили сообщений на ' +
+            datetimeUtil.parseSecondsIntoTimeString(todayDuration);
+        const todayVoicesPercentage = (voicesDuration / todayDuration) * 100;
+        const todayVoicesPercentageReply = `, это ${todayVoicesPercentage.toFixed(1)}% от общего числа`;
         await ctx.reply(
-            `Ваше общее количество голосовых сообщений: ${totalVoices}\n\nСегодня вы отправили ${todaysVoices}, это ${((todaysVoices / totalVoices) * 100).toFixed(2)}% от общего числа\n\n`,
+            amountOfVoicesReply +
+                todayAmountOfVoicesReply +
+                todayVoicesPercentageReply,
             { reply_parameters: { message_id: ctx.message.message_id } },
         );
     }

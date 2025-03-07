@@ -5,20 +5,6 @@ enum TimePartsEnum {
     DAYS = 'd',
 }
 
-const timePartOrder: TimePartsEnum[] = [
-    TimePartsEnum.SECONDS,
-    TimePartsEnum.MINUTES,
-    TimePartsEnum.HOURS,
-    TimePartsEnum.DAYS,
-];
-
-const timePartAmountOfTime: Map<TimePartsEnum, number> = new Map([
-    [TimePartsEnum.SECONDS, 60],
-    [TimePartsEnum.MINUTES, 60],
-    [TimePartsEnum.HOURS, 60],
-    [TimePartsEnum.DAYS, 24],
-]);
-
 export function parseSecondsIntoTimeString(seconds: number) {
     const d = Math.floor(seconds / (3600 * 24));
     const h = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -28,6 +14,7 @@ export function parseSecondsIntoTimeString(seconds: number) {
     const dDisplay =
         d > 0
             ? d +
+              ' ' +
               parseAmountInString(d, {
                   one: 'день',
                   second: 'дня',
@@ -37,6 +24,7 @@ export function parseSecondsIntoTimeString(seconds: number) {
     const hDisplay =
         h > 0
             ? h +
+              ' ' +
               parseAmountInString(h, {
                   one: 'час',
                   second: 'часа',
@@ -46,6 +34,7 @@ export function parseSecondsIntoTimeString(seconds: number) {
     const mDisplay =
         m > 0
             ? m +
+              ' ' +
               parseAmountInString(m, {
                   one: 'минута',
                   second: 'минуты',
@@ -55,6 +44,7 @@ export function parseSecondsIntoTimeString(seconds: number) {
     const sDisplay =
         s > 0
             ? s +
+              ' ' +
               parseAmountInString(s, {
                   one: 'секунда',
                   second: 'секунды',

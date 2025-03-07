@@ -19,7 +19,7 @@ voiceComposer.on(
     voiceController.handleVoice.bind(voiceController),
 );
 voiceComposer.command(
-    BotCommandsEnum.TOP_VOICES,
+    BotCommandsEnum.CHAT_TOP_VOICES,
     voiceController.getTopVoiceUsers.bind(voiceController),
 );
 voiceComposer.command(
@@ -27,7 +27,7 @@ voiceComposer.command(
     voiceController.getTodayTopVoiceUsers.bind(voiceController),
 );
 voiceComposer.command(
-    BotCommandsEnum.OWN_VOICES_LENGTH,
+    BotCommandsEnum.OWN_VOICES_DURATION,
     voiceController.ownVoicesLength.bind(voiceController),
 );
 
