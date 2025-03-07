@@ -4,9 +4,15 @@ import { CustomContext } from '../common/types/custom-context.type';
 const randomComposer = new Composer<CustomContext>();
 
 randomComposer.command('random', (ctx: CustomContext) => {
+    if (!ctx.message) {
+        throw new Error('ctx.message is undefined');
+    }
     ctx.session.jobInProgress = 'random';
     ctx.session.jobStage = 'first_number';
-    ctx.reply('Enter random start: ', { reply_markup: { force_reply: true } });
+    ctx.reply('Enter random start: ', {
+        reply_markup: { force_reply: true },
+        reply_parameters: { message_id: ctx.message?.message_id },
+    });
 });
 
 randomComposer
@@ -30,6 +36,7 @@ randomComposer
                 `Enter random start: ${ctx.session.stageRetry ? `\nAttempt number ${ctx.session.stageRetry}` : ''}`,
                 {
                     reply_markup: { force_reply: true },
+                    reply_parameters: { message_id: ctx.message?.message_id },
                 },
             );
             return;
@@ -38,6 +45,7 @@ randomComposer
         ctx.session.jobStage = 'last_number';
         ctx.reply('Enter random end: ', {
             reply_markup: { force_reply: true },
+            reply_parameters: { message_id: ctx.message?.message_id },
         });
     });
 
@@ -46,6 +54,9 @@ randomComposer
     .filter((ctx: CustomContext) => ctx.session.jobInProgress === 'random')
     .filter((ctx: CustomContext) => ctx.session.jobStage === 'last_number')
     .use(async (ctx: CustomContext) => {
+        if (!ctx.message) {
+            throw new Error('ctx.message is undefined');
+        }
         if (!ctx.session.randomStart) {
             throw new Error();
         }
@@ -62,6 +73,7 @@ randomComposer
                 `Enter random end: ${ctx.session.stageRetry ? `\nAttempt number ${ctx.session.stageRetry}` : ''}`,
                 {
                     reply_markup: { force_reply: true },
+                    reply_parameters: { message_id: ctx.message?.message_id },
                 },
             );
             return;
