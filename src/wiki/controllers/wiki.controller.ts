@@ -6,8 +6,14 @@ import { IWikiArticleResponse } from '../interfaces/wiki-article-response.interf
 export class WikiController {
     constructor(private wikiService: IWikiService) {}
 
-    async search(searchString: string, page: number): Promise<InlineKeyboard> {
+    async search(
+        searchString: string,
+        page: number,
+    ): Promise<InlineKeyboard | null> {
         const data = await this.wikiService.search(searchString, page);
+        if (!data.query.search.length) {
+            return null;
+        }
         const keyboard = new InlineKeyboard();
         for (let i = 0; i < data.query.search.length; i++) {
             if (i % 2 === 0) {

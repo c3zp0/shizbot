@@ -36,12 +36,17 @@ wikiComposer.command('w', async (ctx: CustomContext) => {
         );
     }
     const keyboard = await wikiController.search(searchString, 1);
-    await ctx.reply(`Поиск википедии по слову: "${searchString}"`, {
-        reply_markup: {
-            inline_keyboard: keyboard.inline_keyboard,
-        },
-        parse_mode: 'Markdown',
-    });
+
+    if (keyboard !== null) {
+        await ctx.reply(`Поиск википедии по слову: "${searchString}"`, {
+            reply_markup: {
+                inline_keyboard: keyboard.inline_keyboard,
+            },
+            parse_mode: 'Markdown',
+        });
+    } else {
+        await ctx.reply(`По запросу "${searchString}" ничего не найдено`);
+    }
 });
 
 wikiComposer.callbackQuery(/^page_(\d+)_(.+)/, async (ctx: CustomContext) => {
@@ -63,17 +68,19 @@ wikiComposer.callbackQuery(/^page_(\d+)_(.+)/, async (ctx: CustomContext) => {
 
     const keyboard = await wikiController.search(searchString, page);
 
-    await ctx.api.editMessageText(
-        ctx.chat.id,
-        ctx.callbackQuery?.message?.message_id,
-        ctx.callbackQuery?.message?.text,
-        {
-            reply_markup: {
-                inline_keyboard: keyboard.inline_keyboard,
+    if (keyboard !== null) {
+        await ctx.api.editMessageText(
+            ctx.chat.id,
+            ctx.callbackQuery?.message?.message_id,
+            ctx.callbackQuery?.message?.text,
+            {
+                reply_markup: {
+                    inline_keyboard: keyboard.inline_keyboard,
+                },
+                parse_mode: 'Markdown',
             },
-            parse_mode: 'Markdown',
-        },
-    );
+        );
+    }
     await ctx.answerCallbackQuery();
 });
 
